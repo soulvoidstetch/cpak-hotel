@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+</head>
+<body>
+    <h1>Bookings</h1>
+
+    {% for booking in bookings %}
+        <p>
+            {{ booking.name }} |
+            {{ booking.phone }} |
+            {{ booking.room }} |
+            {{ booking.checkin }} →
+            {{ booking.checkout }}
+        </p>
+    {% endfor %}
+</body>
+</html>

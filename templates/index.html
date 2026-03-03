@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CPAK Lounge</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom, #0f0f0f, #1a1a1a);
+            color: white;
+            margin: 0;
+        }
+
+        .navbar {
+            background: black;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .rooms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .card {
+            background: #1c1c1c;
+            border-radius: 12px;
+            padding: 15px;
+            transition: 0.4s;
+            box-shadow: 0 0 10px rgba(255,215,0,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 25px gold;
+        }
+
+        img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        h2 {
+            margin: 10px 0 5px;
+        }
+
+        .price {
+            color: gold;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        form label {
+            font-size: 13px;
+            display: block;
+            margin-top: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 3px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            background: gold;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px gold;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    CPAK LOUNGE – Premium Hotel Booking
+</div>
+
+<div class="hero">
+    <h1>Experience Luxury in Lagos</h1>
+    <p>Select your room and choose your arrival & departure dates</p>
+</div>
+
+<div class="rooms">
+    {% for room in rooms %}
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/' ~ room.image) }}">
+        <h2>{{ room.name }}</h2>
+        <div class="price">₦{{ room.price }} / Night</div>
+
+        <form method="POST">
+            <input type="hidden" name="room" value="{{ room.name }}">
+
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Enter your full name" required>
+
+            <label>Phone Number</label>
+            <input type="text" name="phone" placeholder="Enter your phone number" required>
+
+            <label>Check-In Date (Arrival Day)</label>
+            <input type="date" name="checkin" required>
+
+            <label>Check-Out Date (Departure Day)</label>
+            <input type="date" name="checkout" required>
+
+            <button type="submit">Book Now</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
