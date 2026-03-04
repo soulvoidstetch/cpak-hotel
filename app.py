@@ -1,18 +1,9 @@
 from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
 import urllib.parse
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bookings.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-# ==============================
-# ROOM LIST
-# ==============================
-
+# Room Data
 rooms = [
 
     # ₦18,000 Rooms
@@ -36,77 +27,36 @@ rooms = [
     {"name": "Florida", "price": 20000, "image": "florida.jpeg"},
 ]
 
-# ==============================
-# DATABASE MODEL
-# ==============================
-
-class Booking(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    phone = db.Column(db.String(20))
-    room = db.Column(db.String(100))
-    checkin = db.Column(db.String(20))
-    checkout = db.Column(db.String(20))
-
-
-# ==============================
-# HOME ROUTE
-# ==============================
-
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def home():
-    if request.method == "POST":
-
-        booking = Booking(
-            name=request.form["name"],
-            phone=request.form["phone"],
-            room=request.form["room"],
-            checkin=request.form["checkin"],
-            checkout=request.form["checkout"],
-        )
-
-        db.session.add(booking)
-        db.session.commit()
-
-        message = f"""
-Hello CPAK Lounge,
-
-I just booked:
-
-Room: {booking.room}
-Name: {booking.name}
-Phone: {booking.phone}
-Check-in: {booking.checkin}
-Check-out: {booking.checkout}
-
-Please confirm availability.
-"""
-
-        encoded_message = urllib.parse.quote(message)
-
-        # 🔥 REPLACE WITH YOUR REAL NUMBER
-        whatsapp_number = "2348012345678"
-
-        return redirect(f"https://wa.me/{whatsapp_number}?text={encoded_message}")
-
     return render_template("index.html", rooms=rooms)
 
+@app.route("/book", methods=["POST"])
+def book():
+    name = request.form.get("name")
+    phone = request.form.get("phone")
+    room = request.form.get("room")
+    checkin = request.form.get("checkin")
+    checkout = request.form.get("checkout")
 
-# ==============================
-# ADMIN PAGE
-# ==============================
+    message = f"""
+Hello CPAK LOUNGE,
 
-@app.route("/admin")
-def admin():
-    bookings = Booking.query.all()
-    return render_template("admin.html", bookings=bookings)
+I would like to book a room.
 
+Name: {name}
+Phone: {phone}
+Room: {room}
+Check-in Date: {checkin}
+Check-out Date: {checkout}
 
-# ==============================
-# RUN APP
-# ==============================
+Please confirm availability. Thank you.
+"""
+
+    encoded_message = urllib.parse.quote(message)
+    whatsapp_url = f"https://wa.me/2349112113542?text={encoded_message}"
+
+    return redirect(whatsapp_url)
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
