@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin</title>
+    <title>Admin Dashboard</title>
 </head>
 <body>
-    <h1>Bookings</h1>
+
+<h1>CPAK Lounge Admin Dashboard</h1>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Room</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+    </tr>
 
     {% for booking in bookings %}
-        <p>
-            {{ booking.name }} |
-            {{ booking.phone }} |
-            {{ booking.room }} |
-            {{ booking.checkin }} →
-            {{ booking.checkout }}
-        </p>
+    <tr>
+        <td>{{ booking.name }}</td>
+        <td>{{ booking.phone }}</td>
+        <td>{{ booking.room }}</td>
+        <td>{{ booking.checkin }}</td>
+        <td>{{ booking.checkout }}</td>
+    </tr>
     {% endfor %}
+</table>
+
 </body>
 </html>

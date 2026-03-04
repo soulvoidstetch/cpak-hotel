@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>CPAK LOUNGE</title>
@@ -6,41 +6,33 @@
 </head>
 <body>
 
-    <h1>CPAK LOUNGE</h1>
-    <p>2, Akosile Close, Ijora Badia, Lagos</p>
-    <p>Call/WhatsApp: 0911 211 3542</p>
+<nav class="navbar">
+    <h2>CPAK LOUNGE</h2>
+    <a href="/admin">Admin</a>
+</nav>
 
-    <h2>Available Rooms</h2>
+<h1 class="title">Luxury Rooms</h1>
 
-    <div class="rooms">
+<div class="rooms">
+    {% for room in rooms %}
+    <div class="room-card">
+        <img src="{{ url_for('static', filename='images/' + room.image) }}">
+        <h3>{{ room.name }}</h3>
+        <p>₦{{ room.price }}</p>
 
-        {% for room in rooms %}
-        <div class="room-card">
-            <img src="{{ url_for('static', filename='images/' + room.image) }}" alt="{{ room.name }}">
-            <h3>{{ room.name }}</h3>
-            <p>Price: ₦{{ room.price }}</p>
+        <form action="/book" method="POST">
+            <input type="hidden" name="room" value="{{ room.name }}">
 
-            <form action="/book" method="POST">
-                <input type="hidden" name="room" value="{{ room.name }}">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="text" name="phone" placeholder="Phone Number" required>
+            <input type="date" name="checkin" required>
+            <input type="date" name="checkout" required>
 
-                <label>Your Full Name</label>
-                <input type="text" name="name" required>
-
-                <label>Your Phone Number</label>
-                <input type="text" name="phone" required>
-
-                <label>Check-in Date</label>
-                <input type="date" name="checkin" required>
-
-                <label>Check-out Date</label>
-                <input type="date" name="checkout" required>
-
-                <button type="submit">Book Now (WhatsApp)</button>
-            </form>
-        </div>
-        {% endfor %}
-
+            <button type="submit">Book Now</button>
+        </form>
     </div>
+    {% endfor %}
+</div>
 
 </body>
 </html>
